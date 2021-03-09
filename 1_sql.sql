@@ -1,84 +1,125 @@
--- show the name, continent and population of all countries. 
+-- 1. Find the country that start with Y
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE 'Y%';
 
-SELECT name, continent, population
-FROM world
+-- 2. Find the countries that end with y
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%y';
 
--- show the name for the countries that have a population of at least 200 million.
+-- 3. Find the countries that contain the letter x
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%x%';
 
-SELECT name
-FROM world
-WHERE population > 200000000
+-- 4. Find the countries that end with land
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%land';
 
--- Give the name and the per capita GDP for those countries with a population of at least 200 million. 
+-- 5. Find the countries that start with C and end with ia
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE 'C%'
+    AND name LIKE '%ia';
 
-SELECT name, GDP/population
-FROM world
-WHERE population > 200000000
+-- 6. Find the country that has oo in the name
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%oo%';
 
--- Show the name and population in millions for the countries of the continent 'South America'. 
--- Divide the population by 1000000 to get population in millions. 
+-- 7. Find the countries that have three or more a in the name
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%a%a%a%';
 
-SELECT name, population/1000000
-FROM world
-WHERE continent = 'South America'
+-- 8. Find the countries that have "t" as the second character.
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '_t%';
 
--- Show the name and population for France, Germany, Italy
+-- 9. Find the countries that have two "o" characters separated by two others.
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '%o__o%';
 
-SELECT name, population
-FROM world
-WHERE name IN ('France', 'Germany', 'Italy')
+-- 10. Find the countries that have exactly four characters.
+SELECT
+    name
+FROM
+    world
+WHERE
+  name LIKE '____';
 
--- Show the countries which have a name that includes the word 'United' 
+-- 11. Find the country where the name is the capital city.
+SELECT
+    name
+FROM
+    world
+WHERE
+  name = capital;
 
-SELECT name
-FROM world
-WHERE name LIKE '%United%'
+-- 12. Find the country where the capital is the country plus "City".
+SELECT
+    name
+FROM
+    world
+WHERE
+  capital = concat(name, ' City');
 
--- Show the countries that are big by area or big by population. Show name, population and area.
+-- 13. Find the capital and the name where the capital includes the name of the country.
+SELECT
+    capital,
+    name
+FROM
+    world
+WHERE
+  capital LIKE concat('%', name, '%');
 
-SELECT name, population, area
-FROM world
-WHERE area > 3000000 OR population > 250000000
+-- 14. Find the capital and the name where the capital is an extension of name of the country.
+SELECT
+    capital,
+    name
+FROM
+    world
+WHERE
+  capital != name
+    AND capital LIKE concat('%', name, '%');
 
--- Exclusive OR (XOR). Show the countries that are big by area (more than 3 m
--- or big by population (more than 250 million) but not both. Show name, population and area.
-
-SELECT name, population, area
-FROM world
-WHERE area > 3000000
-XOR population > 250000000
-
--- For South America show population in millions and GDP in billions both to 2 decimal places.
-
-SELECT name, ROUND(population/1000000, 2), ROUND(GDP/1000000000, 2)
-FROM world
-WHERE continent = 'South America'
-
--- Show per-capita GDP for the trillion dollar countries to the nearest $1000.
-
-SELECT name, ROUND((gdp/population/1000)) * 1000
-FROM world
-WHERE GDP > 1000000000000
-
--- Show the name and capital where the name and the capital have the same number of characters.
-
-SELECT name, capital
-FROM world
-WHERE LENGTH(name) = LENGTH(capital)
-
--- Show the name and the capital where the first letters of each match. Don't include countries where the name and the capital are the same word.
-
-SELECT name, capital
-FROM world
-WHERE LEFT(name, 1) = LEFT(capital, 1) AND capital <> name
-
--- Find the country that has all the vowels and no spaces in its name.
-
-SELECT name
-FROM world
-WHERE name LIKE '%a%'
-    AND name LIKE '%e%'
-    AND name LIKE '%i%'
-    AND name LIKE '%o%'
-    AND name LIKE '%u%'
-    AND NAME NOT LIKE '% %'
+-- 15. Show the name and the extension where the capital is an extension of name of the country.
+SELECT
+    name,
+    REPLACE(capital, name, '') AS Extension
+FROM
+    world
+WHERE
+  capital != name
+    AND capital LIKE concat('%', name, '%');
